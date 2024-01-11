@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "./superbaseClient";
+import Login from "./components/login";
+
 import "./App.css";
 
 function App() {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   return (
     <>
       {/* if user isn't null, show home 
       else show login  */}
-      {user !== null ? (
+      {session !== null ? (
         <div className="Home">
           <h1>Home</h1>
           <p>Home is where the heart is</p>
@@ -19,14 +33,8 @@ function App() {
           </ul>
         </div>
       ) : (
-        <div className="Login">
-          <h1>Login</h1>
-          <p>Please login</p>
-          <form id="login-form">
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button type="submit">Login</button>
-          </form>
+        <div>
+          <Login />
         </div>
       )}
     </>
