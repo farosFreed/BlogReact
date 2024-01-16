@@ -5,10 +5,11 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import "./App.css";
 import CreatePostForm from "./components/createpost";
+import PostList from "./components/postlist";
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
-  const location = window.location; // if this works we can remove react router
+  // const location = window.location; // if this works we can remove react router
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -25,18 +26,31 @@ function App() {
 
   return (
     <>
-      {/* if user isn't null, show home 
-      else show login  */}
-      {session !== null ? (
+      {window.location.pathname === "/" ? (
         <div className="Home">
-          <h1>Admin Dashboard</h1>
-          <CreatePostForm user={session.user} />
-          <a href="/">Go Home</a>
+          <h1>Home</h1>
+          <PostList />
+          <a href="/admin">Go to Admin Dashboard</a>
         </div>
       ) : (
-        <div>
-          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
-        </div>
+        <>
+          {/* if user isn't null, show admin dash
+      else show login  */}
+          {session !== null ? (
+            <div className="Home">
+              <h1>Admin Dashboard</h1>
+              <CreatePostForm user={session.user} />
+              <a href="/">Go Home</a>
+            </div>
+          ) : (
+            <div>
+              <Auth
+                supabaseClient={supabase}
+                appearance={{ theme: ThemeSupa }}
+              />
+            </div>
+          )}
+        </>
       )}
     </>
   );
