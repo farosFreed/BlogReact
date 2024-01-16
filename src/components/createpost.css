@@ -1,0 +1,10 @@
+.success-msg {
+  display: none;
+}
+.success-msg.show {
+  display: block;
+  background: lightgreen;
+  color: darkgreen;
+  border: 1px solid darkgreen;
+  border-radius: 5px;
+}
