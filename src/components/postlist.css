@@ -1,0 +1,16 @@
+ul.post-list {
+  list-style-type: none;
+  padding-inline-start: 0px;
+}
+
+.post-list li {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+}
+.post-list li:hover {
+  background-color: #5e5959;
+  color: #fff;
+}

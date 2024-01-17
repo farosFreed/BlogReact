@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-// import "./createpost.css";
+import "./postlist.css";
 
-const PostList: React.FC = () => {
-  const mockPosts = [
-    { title: "test", description: "test" },
-    { title: "test2", description: "test2" },
-  ];
+type BlogPost = {
+  title: string;
+  description: string;
+};
 
+const PostList = ({ posts }: { posts: BlogPost[] }) => {
   return (
     <ul className="post-list">
-      {mockPosts.map((post) => (
+      {posts.map((post) => (
         <li>
           <h3>{post.title}</h3>
           <p>{post.description}</p>

@@ -9,7 +9,7 @@ import PostList from "./components/postlist";
 
 function App() {
   const [session, setSession] = useState<Session | null>(null);
-  // const location = window.location; // if this works we can remove react router
+  const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -20,8 +20,21 @@ function App() {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+    //return () => subscription.unsubscribe();
+  }, []);
 
-    return () => subscription.unsubscribe();
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data, error } = await supabase.from("posts").select();
+      if (error) {
+        alert(error.message);
+      } else if (data) {
+        console.log(data);
+        setPosts(data);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   return (
@@ -29,7 +42,7 @@ function App() {
       {window.location.pathname === "/" ? (
         <div className="Home">
           <h1>Home</h1>
-          <PostList />
+          <PostList posts={posts} />
           <a href="/admin">Go to Admin Dashboard</a>
         </div>
       ) : (
